@@ -34,7 +34,7 @@ const Card = () => {
                   />
                   <div className="relative flex items-center justify-center h-full">
                     <img
-                      className="relative z-20 w-full h-full object-cover"
+                      className="relative z-10 w-full h-full object-cover"
                       src="./img/illustrations/rocket-white.png"
                       alt="rocket"
                     />

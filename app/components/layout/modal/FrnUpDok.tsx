@@ -1,10 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-const FormInput: React.FC = () => {
-  const [doctorName, setDoctorName] = useState("");
-  const [specialization, setSpecialization] = useState("");
-  const [doctorPhoto, setDoctorPhoto] = useState<File | null>(null);
+interface Dokter {
+  id_dokter: number;
+  Nama_Dokter: string;
+  Foto_Dokter?: string;
+  Jenis_Spesialis: string;
+}
+
+interface FormUpDokProps {
+  dokter: Dokter;
+}
+
+const FormInput: React.FC<FormUpDokProps> = ({ dokter }) => {
+  const ID_Dokter = dokter.id_dokter.toString() || "2";
+  const [doctorName, setDoctorName] = useState(dokter.Nama_Dokter);
+  const [specialization, setSpecialization] = useState(dokter.Jenis_Spesialis);
+  const [doctorPhoto, setDoctorPhoto] = useState<File | string | null>(
+    dokter.Foto_Dokter || null
+  );
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -54,14 +68,17 @@ const FormInput: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    if (doctorPhoto) {
+    {
       const formData = new FormData();
-      formData.append("file", doctorPhoto);
-      formData.append("doctorName", doctorName);
-      formData.append("specialization", specialization);
+      formData.append("id_dokter", ID_Dokter);
+      formData.append("Nama_Dokter", doctorName);
+      formData.append("Jenis_Spesialis", specialization);
+      if (doctorPhoto instanceof File) {
+        formData.append("file", doctorPhoto);
+      }
 
       try {
-        const response = await axios.post("/api/uploadDok", formData, {
+        const response = await axios.put("/api/UpdateDok", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -99,6 +116,7 @@ const FormInput: React.FC = () => {
           setAlert({ show: false, type: "", message: "" });
         }, 3000);
       } finally {
+        window.location.reload();
         setIsSubmitting(false);
       }
     }
@@ -190,7 +208,6 @@ const FormInput: React.FC = () => {
           name="doctorPhoto"
           onChange={handlePhotoChange}
           className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-          required
         />
       </div>
 

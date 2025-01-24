@@ -1,10 +1,29 @@
-import React, { useContext, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
-const FormInput: React.FC = () => {
-  const [doctorName, setDoctorName] = useState("");
-  const [specialization, setSpecialization] = useState("");
-  const [doctorPhoto, setDoctorPhoto] = useState<File | null>(null);
+interface Doctor {
+  id: number;
+  id_dokter: number;
+  Nama_Dokter: string;
+  Foto_Dokter?: string;
+  hari: Number;
+  jam_praktek: string;
+  status: string;
+}
+
+interface FormUpdateProps {
+  doctor: Doctor;
+}
+
+const FormUpdate: React.FC<FormUpdateProps> = ({ doctor }) => {
+  const [isActive, setIsActive] = useState(false);
+  const [formData, setFormData] = useState<Doctor>(doctor);
+  const [newImage, setNewImage] = useState<File | null>(null);
+  const [doctorName, setDoctorName] = useState(doctor.Nama_Dokter);
+  const [doctorPhoto, setDoctorPhoto] = useState<File | string | null>(
+    doctor.Foto_Dokter || null
+  );
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -51,56 +70,26 @@ const FormInput: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewImage(e.target.files[0]);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    if (doctorPhoto) {
-      const formData = new FormData();
-      formData.append("file", doctorPhoto);
-      formData.append("doctorName", doctorName);
-      formData.append("specialization", specialization);
-
-      try {
-        const response = await axios.post("/api/uploadDok", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-
-        if (response.status === 200) {
-          console.log("Response:", response.data);
-          setAlert({
-            show: true,
-            type: "success",
-            message: response.data.message,
-          });
-        }
-
-        // Reset all form values
-        setDoctorName("");
-        setSpecialization("");
-        setDoctorPhoto(null);
-      } catch (error) {
-        console.error("Error uploading file:", error);
-        if (axios.isAxiosError(error)) {
-          setAlert({
-            show: true,
-            type: "error",
-            message: error.response?.data?.message || "Error uploading data",
-          });
-        } else {
-          setAlert({
-            show: true,
-            type: "error",
-            message: "Error uploading data",
-          });
-        }
-        setTimeout(() => {
-          setAlert({ show: false, type: "", message: "" });
-        }, 3000);
-      } finally {
-        setIsSubmitting(false);
-      }
+    if (newImage) {
+      formData.Foto_Dokter = newImage.name; // Update with new image name
     }
   };
 
@@ -162,22 +151,6 @@ const FormInput: React.FC = () => {
             required
           />
         </div>
-
-        {/* Jenis Spesialis */}
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-            Jenis Spesialis
-          </label>
-          <input
-            type="text"
-            name="specialization"
-            value={specialization}
-            onChange={(e) => setSpecialization(e.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-            placeholder="Jenis Spesialis"
-            required
-          />
-        </div>
       </div>
 
       {/* Full width file input */}
@@ -192,6 +165,26 @@ const FormInput: React.FC = () => {
           className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
           required
         />
+      </div>
+
+      {/* Toggle Status */}
+      <div className="mb-4">
+        <label className="inline-flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isActive}
+            onChange={(e) => setIsActive(e.target.checked)}
+            className="sr-only peer"
+          />
+          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600"></div>
+          <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+            Status Aktif
+          </span>
+        </label>
+        <p>
+          ini status aktif:
+          {isActive ? "Aktif" : "Tidak Aktif"}
+        </p>
       </div>
 
       {/* Action Buttons */}
@@ -212,4 +205,4 @@ const FormInput: React.FC = () => {
   );
 };
 
-export default FormInput;
+export default FormUpdate;

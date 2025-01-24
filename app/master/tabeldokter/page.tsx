@@ -1,12 +1,12 @@
 import DefaultLayout from "@components/layout/DefaultLayout";
-import Card from "@components/Card/Card";
+import Table from "@components/dashboard/table/tableDokter";
 
-export default function Home() {
+export default function TabelDokter() {
   return (
     <>
       <DefaultLayout>
         <div className="container">
-          <Card />
+          <Table />
         </div>
       </DefaultLayout>
     </>

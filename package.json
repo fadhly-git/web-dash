@@ -11,6 +11,8 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@popperjs/core": "^2.11.8",
+    "@preline/dropdown": "^2.5.2",
     "axios": "^1.7.9",
     "cookie": "^1.0.2",
     "formidable": "^3.5.2",
@@ -26,7 +28,8 @@
     "@eslint/eslintrc": "^3",
     "@types/formidable": "^3.4.5",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/node": "^20",
+    "@types/next": "^8.0.7",
+    "@types/node": "^20.17.14",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.20",
