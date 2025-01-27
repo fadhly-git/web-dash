@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import Aside from "../Aside/Aside";
 import Navbar from "../navbar/Navbar";
-import FixedPlugin from "./fixed-plugin";
 
 interface DefaultLayoutProps {
   children: ReactNode;

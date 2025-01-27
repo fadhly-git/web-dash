@@ -1,5 +1,5 @@
 "use client";
-import FormInput from "./FormInputStats";
+import FormInput from "../from/FormInputStats";
 import { useState } from "react";
 import {
   Dialog,
@@ -8,20 +8,13 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-interface Doctors {
-  id_dokter: number;
-  Nama_Dokter: string;
-  Foto_Dokter?: string;
-}
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  setRefresh: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
-  const [open, setOpen] = useState(true);
-
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, setRefresh }) => {
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-10">
       <DialogBackdrop
@@ -49,7 +42,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 >
                   <svg
                     className="w-3 h-3"
-                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 14 14"
@@ -67,7 +59,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
               </div>
               {/* <!-- Modal body --> */}
               <div className="p-4 md:p-5">
-                <FormInput />
+                <FormInput setRefresh={setRefresh} />
               </div>
             </div>
           </DialogPanel>

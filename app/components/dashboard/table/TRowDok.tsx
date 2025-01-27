@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import BtnModal from "@components/layout/modal/BtnModUpDok";
+import Modal from "@components/layout/modal/MdlUpDok";
 import ModalDelWarn from "@components/layout/modalWarning/MdlDelWarn";
 
 interface Dokter {
@@ -9,10 +9,17 @@ interface Dokter {
   Foto_Dokter?: string;
   Jenis_Spesialis: string;
 }
+interface TRowProps {
+  dokter: Dokter;
+  setRefresh: () => void;
+}
 
-const TRow: React.FC<{ dokter: Dokter }> = ({ dokter }) => {
+const TRow: React.FC<TRowProps> = ({ dokter, setRefresh }) => {
   const [isOpenUp, setIsOpenUp] = useState(false);
   const [isMdlDelOpen, setIsMdlDelOpen] = useState(false);
+  const handleClose = () => {
+    setIsOpenUp(false);
+  };
   return (
     <>
       <tr key={dokter.id_dokter}>
@@ -42,10 +49,18 @@ const TRow: React.FC<{ dokter: Dokter }> = ({ dokter }) => {
         </td>
         <td className="p-2 text-center">
           <div className="flex justify-center gap-2">
-            <BtnModal
+            <button
+              className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-green-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+              onClick={() => setIsOpenUp(true)}
+            >
+              {" "}
+              <i className="fas fa-plus"> </i>&nbsp;&nbsp;Edit
+            </button>
+            <Modal
               dokter={dokter}
               isOpen={isOpenUp}
-              setIsModalOpen={setIsOpenUp}
+              onClose={() => handleClose()}
+              setRefresh={() => setRefresh()}
             />
             <button
               className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-yellow-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
@@ -59,6 +74,7 @@ const TRow: React.FC<{ dokter: Dokter }> = ({ dokter }) => {
               dokter={dokter}
               isOpen={isMdlDelOpen}
               onClose={() => setIsMdlDelOpen(false)}
+              setRefresh={() => setRefresh()}
             />
           </div>
         </td>

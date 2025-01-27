@@ -1,4 +1,4 @@
-import FormUpdate from "./FromUpdate";
+import FormUpdate from "../from/FromUpdate";
 
 import { useState } from "react";
 import {
@@ -53,7 +53,6 @@ const Modal: React.FC<ModalProps> = ({ dokter, isOpen, onClose }) => {
                 >
                   <svg
                     className="w-3 h-3"
-                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 14 14"

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Modal from "@components/layout/modal/MdlUpdStats";
+import ModalDel from "@components/layout/modalWarning/MdlDelStat";
 
 const PRACTICE_DAYS = [
   { id: 1, name: "Senin" },
@@ -24,10 +25,13 @@ interface StatusDoc {
 
 interface TRowProps {
   status: StatusDoc;
+  isRefresh: boolean;
+  setRefresh: () => void;
 }
 
-const TRow: React.FC<TRowProps> = ({ status }) => {
+const TRow: React.FC<TRowProps> = ({ status, isRefresh, setRefresh }) => {
   const [isOpenUp, setIsModalOpen] = useState(false);
+  const [isMdlDelOpen, setIsMdlDelOpen] = useState(false);
   const dayName =
     PRACTICE_DAYS.find((day) => day.id == status.hari)?.name || "";
   const statusClass =
@@ -72,19 +76,39 @@ const TRow: React.FC<TRowProps> = ({ status }) => {
           <p className={statusClass}>{status.status}</p>
         </td>
         <td className="text-center">
-          <button
-            className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-green-900 to-green-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
-            onClick={() => setIsModalOpen(true)}
-          >
-            {" "}
-            <i className="fas fa-plus"> </i>&nbsp;&nbsp;Edit
-          </button>
-          <Modal
-            isOpen={isOpenUp}
-            onClose={() => setIsModalOpen(false)}
-            status={status}
-            se
-          />
+          <div className="grid grid-cols-2 gap-0">
+            <div className="">
+              <button
+                className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-green-900 to-green-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+                onClick={() => setIsModalOpen(true)}
+              >
+                {" "}
+                <i className="fas fa-plus"> </i>&nbsp;&nbsp;Edit
+              </button>
+              <Modal
+                isOpen={isOpenUp}
+                onClose={() => setIsModalOpen(false)}
+                status={status}
+                setRefresh={setRefresh}
+              />
+            </div>
+            <div className="">
+              <button
+                className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-yellow-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+                onClick={() => {
+                  setIsMdlDelOpen(true);
+                }}
+              >
+                Delete
+              </button>
+              <ModalDel
+                status={status}
+                isOpen={isMdlDelOpen}
+                onClose={() => setIsMdlDelOpen(false)}
+                setRefresh={setRefresh}
+              />
+            </div>
+          </div>
         </td>
       </tr>
     </>

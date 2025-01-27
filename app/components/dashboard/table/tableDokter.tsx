@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BtnModal from "@components/layout/modal/BtnModalInp";
+import Modal from "@components/layout/modal/modalInput";
 import TRow from "./TRowDok";
 
 interface Doctor {
@@ -16,6 +16,7 @@ const DashboardTable: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -29,11 +30,12 @@ const DashboardTable: React.FC = () => {
         console.error("Error fetching data:", err);
       } finally {
         setIsLoading(false);
+        setRefresh(false);
       }
     };
 
     fetchDoctors();
-  }, []);
+  }, [refresh]);
 
   return (
     <div className="w-full px-6 py-6 mx-auto">
@@ -46,10 +48,18 @@ const DashboardTable: React.FC = () => {
                   <h6 className="mb-0">Tabel Dokter</h6>
                 </div>
                 <div className="flex-none w-1/2 max-w-full px-3 text-right">
-                  <BtnModal
+                  <button
+                    className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-blue-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    {" "}
+                    <i className="fas fa-plus"> </i>&nbsp;&nbsp;Add New Doctors
+                  </button>
+                  <Modal
                     isOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                  ></BtnModal>
+                    onClose={() => setIsModalOpen(false)}
+                    setRefresh={() => setRefresh(true)}
+                  />
                 </div>
               </div>
             </div>
@@ -84,7 +94,11 @@ const DashboardTable: React.FC = () => {
                       </tr>
                     ) : (
                       doctors.map((doctor) => (
-                        <TRow key={doctor.id_dokter} dokter={doctor} />
+                        <TRow
+                          key={doctor.id_dokter}
+                          dokter={doctor}
+                          setRefresh={() => setRefresh(true)}
+                        />
                       ))
                     )}
                   </tbody>

@@ -16,7 +16,6 @@ export async function PUT(req: NextRequest) {
     }
 
       const formData = await req.formData();
-      console.log('Form data entries:', Array.from(formData.entries()));
     
     // Validate required fields
     const id_dokter = formData.get('id_dokter');

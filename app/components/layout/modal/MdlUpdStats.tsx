@@ -6,7 +6,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import FormInput from "./FormUpStat";
+import FormInput from "../from/FormUpStat";
 
 interface StatusDoc {
   id: number;
@@ -23,7 +23,6 @@ interface ModalProps {
   onClose: () => void;
   status: StatusDoc;
   setRefresh: () => void;
-  isRefresh: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -31,10 +30,7 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   status,
   setRefresh,
-  isRefresh,
 }) => {
-  const [open, setOpen] = useState(true);
-
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-10">
       <DialogBackdrop
@@ -62,7 +58,6 @@ const Modal: React.FC<ModalProps> = ({
                 >
                   <svg
                     className="w-3 h-3"
-                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 14 14"
@@ -80,7 +75,11 @@ const Modal: React.FC<ModalProps> = ({
               </div>
               {/* <!-- Modal body --> */}
               <div className="p-4 md:p-5">
-                <FormInput setRefresh={} />
+                <FormInput
+                  onClose={onClose}
+                  setRefresh={() => setRefresh()}
+                  status={status}
+                />
               </div>
             </div>
           </DialogPanel>

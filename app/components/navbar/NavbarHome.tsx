@@ -1,22 +1,40 @@
 import React from "react";
 import Link from "next/link";
 
-const NavbarHome: React.FC = () => {
+interface LinkProps {
+  handleFullscreen: () => void;
+}
+
+const NavbarHome: React.FC<LinkProps> = ({ handleFullscreen }) => {
   return (
-    <nav className="bg-gray-800 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="text-white text-lg font-bold">
-          RS PKU Muhammadiyah Boja
+    <div className="relative group items-center">
+      <nav className="bg-gray-800 p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <div className="text-white text-lg font-bold">
+            RS PKU Muhammadiyah Boja
+          </div>
         </div>
-        <ul className="flex space-x-4">
-          <li>
-            <Link href="/master" className="text-gray-300 hover:text-white">
-              Home
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+      </nav>
+      <nav className="absolute top-full left-0 w-full bg-gray-800 p-4 hidden group-hover:block">
+        <div className="container mx-auto flex justify-between items-center">
+          <ul className="flex">
+            <li>
+              <Link href="/master" className="text-gray-300 hover:text-white">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <button
+                onClick={handleFullscreen}
+                className="ml-5 text-gray-300 hover:text-white"
+              >
+                Fullscreen
+              </button>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
   );
 };
 

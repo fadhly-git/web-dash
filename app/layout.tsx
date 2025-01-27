@@ -8,6 +8,7 @@ import "../assets/css/soft-ui-dashboard-tailwind.css";
 import Head from "next/head";
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
+import { inter } from "@ui/fonts";
 
 const metadata = {
   title: "RS PKU Muhammadiyah Boja",
@@ -37,7 +38,12 @@ export default function RootLayout({
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <body suppressHydrationWarning>{children}</body>
+      <body
+        className={`${inter.className} antialiased font-sans text-gray-600`}
+        suppressHydrationWarning
+      >
+        {children}
+      </body>
     </html>
   );
 }

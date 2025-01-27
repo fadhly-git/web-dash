@@ -25,7 +25,7 @@ const SignIn: React.FC = () => {
 
     let responseClone; // 1
     try {
-      const response = await fetch("/api/users", {
+      const response = await fetch("/api/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

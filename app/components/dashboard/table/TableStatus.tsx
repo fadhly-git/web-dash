@@ -32,6 +32,7 @@ const TableStatus: React.FC = () => {
         setError("Failed to fetch doctors");
         console.error("Error fetching data:", err);
       } finally {
+        setRefresh(false);
         setIsLoading(false);
       }
     };
@@ -60,6 +61,7 @@ const TableStatus: React.FC = () => {
                   <Modal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
+                    setRefresh={() => setRefresh(true)}
                   />
                 </div>
               </div>
@@ -101,7 +103,14 @@ const TableStatus: React.FC = () => {
                       </tr>
                     ) : Array.isArray(status) && status.length > 0 ? (
                       status.map((status) => {
-                        return <TRow key={status.id} status={status} />;
+                        return (
+                          <TRow
+                            key={status.id}
+                            status={status}
+                            setRefresh={() => setRefresh(true)}
+                            isRefresh={isRefresh}
+                          />
+                        );
                       })
                     ) : (
                       <tr>

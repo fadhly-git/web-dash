@@ -1,53 +1,47 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import InfoModal from "../InfoModal/Modal";
 
-const FormInput: React.FC = () => {
+interface ModalProps {
+  setRefresh: () => void;
+}
+
+const FormInput: React.FC<ModalProps> = ({ setRefresh }) => {
   const [doctorName, setDoctorName] = useState("");
   const [specialization, setSpecialization] = useState("");
   const [doctorPhoto, setDoctorPhoto] = useState<File | null>(null);
-  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isInfoModalOpen, setInfoModalOpen] = useState(false);
+  const [type, setType] = useState("");
+  const [massage, setMassage] = useState("");
+
+  const handleClose = () => {
+    setInfoModalOpen(false);
+    if (type === "success") {
+      setRefresh();
+    }
+  };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       // Validate file size (2MB limit)
       if (file.size > 2 * 1024 * 1024) {
-        setAlert({
-          show: true,
-          message: "File size should be less than 2MB",
-          type: "error",
-        });
-        e.target.value = "";
-        setTimeout(
-          () => setAlert({ show: false, message: "", type: "" }),
-          3000
-        );
+        setType("error");
+        setMassage("Ukuran file terlalu besar, maksimal 2MB");
+        setInfoModalOpen(true);
         return;
       }
 
       // Validate file type
-      if (!file.type.startsWith("image/")) {
-        setAlert({
-          show: true,
-          message: "Please upload an image file",
-          type: "error",
-        });
-        e.target.value = "";
-        setTimeout(
-          () => setAlert({ show: false, message: "", type: "" }),
-          3000
-        );
+      if (!file.type.includes("image")) {
+        setType("error");
+        setMassage("Hanya file PNG, JPG, JPEG yang diperbolehkan");
+        setInfoModalOpen(true);
         return;
       }
 
       setDoctorPhoto(file);
-      setAlert({
-        show: true,
-        message: "File uploaded successfully",
-        type: "success",
-      });
-      setTimeout(() => setAlert({ show: false, message: "", type: "" }), 3000);
     }
   };
 
@@ -68,12 +62,9 @@ const FormInput: React.FC = () => {
         });
 
         if (response.status === 200) {
-          console.log("Response:", response.data);
-          setAlert({
-            show: true,
-            type: "success",
-            message: response.data.message,
-          });
+          setType("success");
+          setMassage("Data berhasil disimpan");
+          setInfoModalOpen(true);
         }
 
         // Reset all form values
@@ -81,23 +72,15 @@ const FormInput: React.FC = () => {
         setSpecialization("");
         setDoctorPhoto(null);
       } catch (error) {
-        console.error("Error uploading file:", error);
         if (axios.isAxiosError(error)) {
-          setAlert({
-            show: true,
-            type: "error",
-            message: error.response?.data?.message || "Error uploading data",
-          });
+          setType("error");
+          setMassage("Error " + error);
+          setInfoModalOpen(true);
         } else {
-          setAlert({
-            show: true,
-            type: "error",
-            message: "Error uploading data",
-          });
+          setType("error");
+          setMassage("Kesalahan dalam upload data");
+          setInfoModalOpen(true);
         }
-        setTimeout(() => {
-          setAlert({ show: false, type: "", message: "" });
-        }, 3000);
       } finally {
         setIsSubmitting(false);
       }
@@ -107,44 +90,12 @@ const FormInput: React.FC = () => {
   return (
     <form onSubmit={handleSubmit} className="p-4 md:p-5">
       {/* Alert Component */}
-      {alert.show && (
-        <div
-          className={`mb-4 p-4 rounded-lg ${
-            alert.type === "success"
-              ? "bg-green-100 border-l-4 border-green-500 text-green-700"
-              : "bg-red-100 border-l-4 border-red-500 text-red-700"
-          }`}
-        >
-          <div className="flex items-center">
-            {alert.type === "success" ? (
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            )}
-            <p className="text-sm font-medium">{alert.message}</p>
-          </div>
-        </div>
-      )}
+      <InfoModal
+        isOpen={isInfoModalOpen}
+        onClose={handleClose}
+        message={massage}
+        type={type}
+      />
       {/* Grid 2 columns */}
       <div className="grid grid-cols-2 gap-6 mb-4">
         {/* Nama Dokter */}
@@ -201,8 +152,8 @@ const FormInput: React.FC = () => {
           disabled={isSubmitting}
           className={`... ${
             isSubmitting
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600"
+              ? "bg-gradient-to-tl from-gray-100 to-gray-100 cursor-not-allowed"
+              : "bg-gradient-to-tl from-blue-500 to-blue-500 text-white hover:bg-gradient-to-tl hover:from-blue-600 hover:to-blue-700 focus:ring-blue-500"
           } text-cyan bg-blue hover:text-white hover:bg-green-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
         >
           Simpan

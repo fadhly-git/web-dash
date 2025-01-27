@@ -1,13 +1,8 @@
 "use client";
-import FormUpDok from "./FrnUpDok";
+import FormUpDok from "../from/FrnUpDok";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 
 interface Dokter {
   id_dokter: number;
@@ -20,9 +15,15 @@ interface ModalProps {
   dokter: Dokter;
   isOpen: boolean;
   onClose: () => void;
+  setRefresh: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ dokter, isOpen, onClose }) => {
+const Modal: React.FC<ModalProps> = ({
+  dokter,
+  isOpen,
+  onClose,
+  setRefresh,
+}) => {
   const [open, setOpen] = useState(true);
 
   return (
@@ -52,7 +53,6 @@ const Modal: React.FC<ModalProps> = ({ dokter, isOpen, onClose }) => {
                 >
                   <svg
                     className="w-3 h-3"
-                    aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 14 14"
@@ -70,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({ dokter, isOpen, onClose }) => {
               </div>
               {/* <!-- Modal body --> */}
               <div className="p-4 md:p-5">
-                <FormUpDok dokter={dokter} />
+                <FormUpDok dokter={dokter} setRefresh={setRefresh} />
               </div>
             </div>
           </DialogPanel>

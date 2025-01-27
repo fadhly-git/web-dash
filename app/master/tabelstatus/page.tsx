@@ -5,7 +5,7 @@ export default function TabelDokter() {
   return (
     <>
       <DefaultLayout>
-        <div className="container">
+        <div className="w-full">
           <Table />
         </div>
       </DefaultLayout>
