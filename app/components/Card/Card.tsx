@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const PRACTICE_DAYS = [
   { id: 1, name: "Senin" },

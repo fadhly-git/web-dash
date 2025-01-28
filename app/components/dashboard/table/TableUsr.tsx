@@ -17,6 +17,7 @@ const UserTable: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isRefresh, setRefresh] = useState(false);
   const [isMdlDelOpen, setIsMdlDelOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const handleClose = () => {
     setIsModalOpen(false);
@@ -42,6 +43,10 @@ const UserTable: React.FC = () => {
     fetchUsers();
   }, [isRefresh]);
 
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="w-full px-6 py-6 mx-auto">
       <div className="flex flex-wrap -mx-3">
@@ -53,6 +58,13 @@ const UserTable: React.FC = () => {
                   <h6 className="text-lg font-bold">Users Table</h6>
                 </div>
                 <div className="flex-none w-1/2 max-w-full px-3 text-right">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="px-4 py-2 mr-4 align-middle transition-all cursor-pointer leading-pro text-xs ease-soft-in inline-block border rounded-lg hover:shadow-soft-xs active:opacity-75 hover:scale-105 tracking-tight-soft bg-150 text-gray"
+                  />
                   <button
                     className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-blue-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
                     onClick={() => setIsModalOpen(true)}
@@ -109,13 +121,13 @@ const UserTable: React.FC = () => {
                         </td>
                       </tr>
                     ) : (
-                      users.map((user) => (
+                      filteredUsers.map((user) => (
                         <tr key={user.id}>
                           <td className="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                             <div className="flex px-2 py-1">
                               <div className="flex flex-col justify-center">
                                 <h6 className="mb-0 text-sm leading-normal">
-                                  {user.id}
+                                  {filteredUsers.indexOf(user) + 1}
                                 </h6>
                               </div>
                             </div>

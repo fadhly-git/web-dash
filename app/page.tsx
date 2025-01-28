@@ -15,7 +15,7 @@ const LandingPage: React.FC = () => {
     }
   };
   return (
-    <div ref={cardRef} className="h-screen bg-white">
+    <div ref={cardRef} className="h-screen bg-white" suppressHydrationWarning>
       <NavbarHome handleFullscreen={handleFullscreen} />
       {/* <div style={{ textAlign: "center", padding: "50px" }}>
         <h1>Welcome to My Next.js App</h1>

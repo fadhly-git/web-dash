@@ -17,6 +17,7 @@ const DashboardTable: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -36,6 +37,11 @@ const DashboardTable: React.FC = () => {
 
     fetchDoctors();
   }, [refresh]);
+  const filteredDoctors = doctors.filter(
+    (doctor) =>
+      doctor.Nama_Dokter.toLowerCase().includes(search.toLowerCase()) ||
+      doctor.Jenis_Spesialis.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="w-full px-6 py-6 mx-auto">
@@ -48,6 +54,13 @@ const DashboardTable: React.FC = () => {
                   <h6 className="mb-0">Tabel Dokter</h6>
                 </div>
                 <div className="flex-none w-1/2 max-w-full px-3 text-right">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="px-4 py-2 mr-4 align-middle transition-all cursor-pointer leading-pro text-xs ease-soft-in inline-block border rounded-lg hover:shadow-soft-xs active:opacity-75 hover:scale-105 tracking-tight-soft bg-150 text-gray"
+                  />
                   <button
                     className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-blue-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
                     onClick={() => setIsModalOpen(true)}
@@ -93,7 +106,7 @@ const DashboardTable: React.FC = () => {
                         </td>
                       </tr>
                     ) : (
-                      doctors.map((doctor) => (
+                      filteredDoctors.map((doctor) => (
                         <TRow
                           key={doctor.id_dokter}
                           dokter={doctor}

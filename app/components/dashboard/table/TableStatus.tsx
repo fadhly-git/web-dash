@@ -4,28 +4,39 @@ import axios from "axios";
 import TRow from "./TRowStats";
 import Modal from "@components/layout/modal/MdlInpStat";
 
+const PRACTICE_DAYS = [
+  { id: 1, name: "Senin" },
+  { id: 2, name: "Selasa" },
+  { id: 3, name: "Rabu" },
+  { id: 4, name: "Kamis" },
+  { id: 5, name: "Jumat" },
+  { id: 6, name: "Sabtu" },
+  { id: 7, name: "Minggu" },
+];
+
 interface StatusDoc {
   id: number;
   id_dokter: number;
   Nama_Dokter: string;
   Foto_Dokter?: string;
-  hari: Number;
+  hari: number;
   jam_praktek: string;
   status: string;
 }
 
 const TableStatus: React.FC = () => {
-  const [status, setStatus] = useState<StatusDoc>();
+  const [status, setStatus] = useState<StatusDoc[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isRefresh, setRefresh] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get<StatusDoc>("/api/status/status");
+        const response = await axios.get<StatusDoc[]>("/api/status/status");
         setStatus(response.data);
         setError(null);
       } catch (err) {
@@ -40,6 +51,16 @@ const TableStatus: React.FC = () => {
     fetchDoctors();
   }, [isRefresh]);
 
+  const filteredDoctorsStat = status.filter(
+    (status) =>
+      status.Nama_Dokter.toLowerCase().includes(search.toLowerCase()) ||
+      status.status.toLowerCase().includes(search.toLowerCase()) ||
+      status.jam_praktek.toLowerCase().includes(search.toLowerCase()) ||
+      PRACTICE_DAYS.find((day) => day.id == status.hari)
+        ?.name.toLocaleLowerCase()
+        .includes(search.toLowerCase())
+  );
+
   return (
     <div className="w-full px-6 py-6 mx-auto">
       <div className="flex flex-wrap -mx-3">
@@ -51,6 +72,13 @@ const TableStatus: React.FC = () => {
                   <h6 className="mb-0">Tabel Dokter</h6>
                 </div>
                 <div className="flex-none w-1/2 max-w-full px-3 text-right">
+                  <input
+                    type="text"
+                    placeholder="Search"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="px-4 py-2 mr-4 align-middle transition-all cursor-pointer leading-pro text-xs ease-soft-in inline-block border rounded-lg hover:shadow-soft-xs active:opacity-75 hover:scale-105 tracking-tight-soft bg-150 text-gray"
+                  />
                   <button
                     className="inline-block px-4 py-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent rounded-lg cursor-pointer leading-pro text-xs ease-soft-in shadow-soft-md bg-150 bg-gradient-to-tl from-blue-900 to-slate-800 hover:shadow-soft-xs active:opacity-85 hover:scale-102 tracking-tight-soft bg-x-25"
                     onClick={() => setIsModalOpen(true)}
@@ -102,7 +130,7 @@ const TableStatus: React.FC = () => {
                         </td>
                       </tr>
                     ) : Array.isArray(status) && status.length > 0 ? (
-                      status.map((status) => {
+                      filteredDoctorsStat.map((status) => {
                         return (
                           <TRow
                             key={status.id}
