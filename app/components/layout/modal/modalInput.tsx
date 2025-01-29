@@ -1,13 +1,6 @@
 "use client";
 import FormInput from "../from/FormInput";
-
-import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -16,8 +9,6 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, setRefresh }) => {
-  const [open, setOpen] = useState(true);
-
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-10">
       <DialogBackdrop

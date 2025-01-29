@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 const PRACTICE_DAYS = [
   { id: 1, name: "Senin" },
@@ -69,7 +70,7 @@ const Card: React.FC = () => {
         }
         return nextIndex;
       });
-    }, 30000); // Ganti dokter setiap 5 detik
+    }, 15000); // Ganti dokter setiap 5 detik
 
     return () => clearInterval(interval);
   }, [doctors]);
@@ -108,7 +109,7 @@ const Card: React.FC = () => {
                 dokterJaga.map((dokter, index) => (
                   <div
                     key={index}
-                    className="grid-cols-none text-xs items-center justify-between border-b border-gray-300 mt-0"
+                    className="grid-cols-none text-m items-center justify-between border-b border-gray-300 mt-0"
                   >
                     <p className="font-bold mb-0 mt-1">{dokter.Nama_Dokter}</p>
                     <p className="mb-1 font-bold text-gray-600">
@@ -143,19 +144,21 @@ const Card: React.FC = () => {
             </div>
             <div className="lg:w-1/4 mt-12 lg:mt-0 flex items-center justify-center">
               <div className="relative w-full h-96 bg-gradient-to-tl from-blue-700 to-blue-200 rounded-xl">
-                <img
-                  src="./img/shapes/waves-white.svg"
-                  className="absolute top-0 hidden w-1/2 h-full lg:block"
-                  alt="waves"
-                />
                 <div className="relative flex items-center justify-center h-full">
-                  <img
+                  <Image
                     className="relative z-10 w-full rounded-lg h-full object-cover"
                     src={
                       currentDoctor.Foto_Dokter ||
-                      "./img/illustrations/rocket-white.png"
+                      "/img/illustrations/rocket-white.png"
                     }
                     alt={currentDoctor.Nama_Dokter}
+                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                    fill
+                    style={{
+                      objectFit: "cover",
+                    }}
+                    priority
+                    unoptimized
                   />
                 </div>
               </div>

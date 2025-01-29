@@ -1,11 +1,6 @@
 import React from "react";
 import { inter } from "@ui/fonts";
 
-const metadata = {
-  title: "RS PKU Muhammadiyah Boja",
-  description: "Rumah Sakit PKU Muhammadiyah Boja",
-};
-
 const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <html lang="en">

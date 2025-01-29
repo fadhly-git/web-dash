@@ -1,11 +1,5 @@
 "use client";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import FormInput from "../from/FormUpStat";
 
 interface StatusDoc {

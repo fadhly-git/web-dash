@@ -136,7 +136,6 @@ const TableStatus: React.FC = () => {
                             key={status.id}
                             status={status}
                             setRefresh={() => setRefresh(true)}
-                            isRefresh={isRefresh}
                           />
                         );
                       })

@@ -1,17 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import {
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-} from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import axios from "axios";
 import Modal from "../InfoModal/Modal";
 
 interface User {

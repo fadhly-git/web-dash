@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDatabaseConnection } from "@/lib/db"; 
+import { getDatabaseConnection } from "@/lib/db";
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const id_dokter = formData.get("doctorId") as string;
     const hari = formData.get("practiceDays") as string;
     const jam_praktek = formData.get("practiceHours") as string;
-    let status = formData.get("isActive") as string;
+    const status = formData.get("isActive") as string;
     const isActive = status === "true" ? "Aktif" : "Cuti";
 
     // Validasi data yang diterima
@@ -27,11 +27,15 @@ export async function POST(request: NextRequest) {
       WHERE id_dokter = ? AND hari = ?
     `;
     const [rows] = await connection.execute(checkQuery, [id_dokter, hari]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const count = (rows as any)[0].count;
 
     if (count > 0) {
       return NextResponse.json(
-        { success: false, message: "Dokter sudah memiliki jadwal di hari tersebut" },
+        {
+          success: false,
+          message: "Dokter sudah memiliki jadwal di hari tersebut",
+        },
         { status: 400 }
       );
     }
@@ -41,7 +45,7 @@ export async function POST(request: NextRequest) {
       INSERT INTO status (id_dokter, hari, jam_praktek, status)
       VALUES (?, ?, ?, ?)
     `;
-    const [result] = await connection.execute(query, [id_dokter, hari, jam_praktek, isActive]);
+    await connection.execute(query, [id_dokter, hari, jam_praktek, isActive]);
 
     // Mengembalikan respons sukses jika data berhasil dimasukkan
     return NextResponse.json(

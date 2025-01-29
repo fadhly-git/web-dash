@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import InfoModal from "../InfoModal/Modal";
 
 const PRACTICE_DAYS = [
@@ -70,7 +63,7 @@ const FormInput: React.FC<FormUpStatProps> = ({
       setStartTime(start);
       setEndTime(end);
     }
-  }, []);
+  }, [status.jam_praktek]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

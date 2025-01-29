@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     const file = formData.get("file") as File;
     const doctorName = formData.get("doctorName") as string;
-    const specialization = formData.get("specialization") as string;;
+    const specialization = formData.get("specialization") as string;
 
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -31,20 +31,19 @@ export async function POST(req: NextRequest) {
 
     const connection = await getDatabaseConnection();
 
-    const [result] = await connection.execute(
+    await connection.execute(
       "INSERT INTO dokter (Nama_Dokter, Foto_Dokter, Jenis_Spesialis) VALUES (?, ?, ?)",
-      [
-        doctorName,
-        doctorPhoto,
-        specialization,
-      ]
+      [doctorName, doctorPhoto, specialization]
     );
 
     return NextResponse.json({
       success: true,
       message: "Doctor added successfully",
     });
-  } catch (error: any) {
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
     console.error("DB Error:", error);
     return NextResponse.json(
       {

@@ -2,20 +2,20 @@ import React from "react";
 import Link from "next/link";
 
 interface LinkProps {
-  handleFullscreen: () => void;
+  handleFullscreen?: () => void;
 }
 
 const NavbarHome: React.FC<LinkProps> = ({ handleFullscreen }) => {
   return (
     <div className="relative group items-center">
-      <nav className="bg-gray-800 p-4">
+      <nav className="bg-[#00008B] p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-white text-lg font-bold">
+          <Link className="text-white text-lg font-bold" href="/">
             RS PKU Muhammadiyah Boja
-          </div>
+          </Link>
         </div>
       </nav>
-      <nav className="absolute top-full left-0 w-full bg-gray-800 p-4 hidden group-hover:block">
+      <nav className="absolute top-full left-0 w-full bg-[#00008B] p-4 hidden group-hover:block">
         <div className="container mx-auto flex justify-between items-center">
           <ul className="flex">
             <li>

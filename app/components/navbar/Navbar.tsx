@@ -22,6 +22,7 @@ const Navbar: React.FC = () => {
         setLastSegment("Users");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
   const handleSidenavToggle = () => {
     const sidenav = document.querySelector("aside");

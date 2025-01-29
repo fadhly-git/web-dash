@@ -1,7 +1,5 @@
 "use client";
 import FormUpDok from "../from/FrnUpDok";
-
-import { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 
 interface Dokter {
@@ -24,8 +22,6 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   setRefresh,
 }) => {
-  const [open, setOpen] = useState(true);
-
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-10">
       <DialogBackdrop

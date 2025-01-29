@@ -25,11 +25,10 @@ interface StatusDoc {
 
 interface TRowProps {
   status: StatusDoc;
-  isRefresh: boolean;
   setRefresh: () => void;
 }
 
-const TRow: React.FC<TRowProps> = ({ status, isRefresh, setRefresh }) => {
+const TRow: React.FC<TRowProps> = ({ status, setRefresh }) => {
   const [isOpenUp, setIsModalOpen] = useState(false);
   const [isMdlDelOpen, setIsMdlDelOpen] = useState(false);
   const dayName =

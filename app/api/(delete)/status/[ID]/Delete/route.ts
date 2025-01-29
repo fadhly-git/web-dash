@@ -5,9 +5,9 @@ export async function DELETE(request: NextRequest) {
   try {
     const connection = await getDatabaseConnection();
 
-      const { id } = await request.json();
-      
-      const params = "DELETE FROM status WHERE id = ?";
+    const { id } = await request.json();
+
+    const params = "DELETE FROM status WHERE id = ?";
     const [result] = await connection.execute(params, [id]);
 
     // const [result] = await connection.execute(
@@ -15,7 +15,10 @@ export async function DELETE(request: NextRequest) {
     //     [id]
     // );
 
-    if ((result as any)[0]?.affectedRows === 0) {
+    if (
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (result as any)[0]?.affectedRows === 0
+    ) {
       return NextResponse.json(
         { success: false, message: "Doctor not found" },
         { status: 404 }
@@ -28,7 +31,7 @@ export async function DELETE(request: NextRequest) {
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Error deleting status" },
+      { error: "Error deleting status " + error },
       { status: 500 }
     );
   }

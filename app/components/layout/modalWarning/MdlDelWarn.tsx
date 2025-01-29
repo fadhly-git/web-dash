@@ -60,7 +60,8 @@ const ModalDelWarn: React.FC<ModalProps> = ({
         setMassage("Data dokter berhasil dihapus");
         setInfoModalOpen(true);
       }
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: unknown) {
       setType("error");
       setMassage("Gagal menghapus data dokter");
       setInfoModalOpen(true);

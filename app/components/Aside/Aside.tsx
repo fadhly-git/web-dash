@@ -9,7 +9,6 @@ import { usePathname } from "next/navigation";
 const Aside: React.FC = () => {
   const pathname = usePathname();
   const [lastSegment, setLastSegment] = useState("");
-  const [masterPath, setMasterPath] = useState("/master");
   useEffect(() => {
     if (pathname) {
       const segments = pathname.split("/");
@@ -22,14 +21,7 @@ const Aside: React.FC = () => {
         setLastSegment("Users");
       }
     }
-  }, [pathname]);
-
-  useEffect(() => {
-    if (pathname) {
-      setMasterPath(
-        pathname.includes("master") ? `/${pathname.split("/")[1]}` : "/master"
-      );
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   return (

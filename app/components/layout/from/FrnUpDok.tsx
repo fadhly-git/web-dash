@@ -21,7 +21,6 @@ const FormInput: React.FC<FormUpDokProps> = ({ dokter, setRefresh }) => {
   const [doctorPhoto, setDoctorPhoto] = useState<File | string | null>(
     dokter.Foto_Dokter || null
   );
-  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isInfoModalOpen, setInfoModalOpen] = useState(false);
   const [type, setType] = useState("");

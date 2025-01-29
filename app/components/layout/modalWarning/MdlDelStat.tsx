@@ -11,7 +11,6 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { useRouter } from "next/navigation";
 
 const PRACTICE_DAYS = [
   { id: 1, name: "Senin" },
@@ -46,7 +45,6 @@ const ModalDelWarn: React.FC<ModalProps> = ({
   onClose,
   setRefresh,
 }) => {
-  const id = status.id;
   const namaDokter = status.Nama_Dokter;
   const idHari = status.hari;
   const Day = PRACTICE_DAYS.find((day) => day.id == idHari)?.name || "";

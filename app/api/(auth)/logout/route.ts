@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { serialize } from 'cookie';
+import { NextResponse } from "next/server";
+import { serialize } from "cookie";
 
-export const POST = async (req: NextRequest) => {
+export const POST = async () => {
   // Clear the token cookie
   const response = NextResponse.json({
     success: true,

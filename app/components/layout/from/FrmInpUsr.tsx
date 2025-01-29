@@ -51,9 +51,16 @@ const FormInput: React.FC<ModalProps> = ({ setRefresh, onClose }) => {
         setType("error");
         setMessage("Failed to save user.");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       setType("error");
-      setMessage("An error occurred while saving the user.");
+      if (axios.isAxiosError(error)) {
+        setMessage(
+          error.response?.data?.message ||
+            "An error occurred while saving the user."
+        );
+      } else {
+        setMessage("An error occurred while saving the user.");
+      }
     } finally {
       setIsSubmitting(false);
       setInfoModalOpen(true);

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import exp from "constants";
 
-const Name = ({ children }: any) => {
+import { ReactNode } from "react";
+
+const Name = ({ children }: { children: ReactNode }) => {
   return (
     <div className="h-19.5">
       <i

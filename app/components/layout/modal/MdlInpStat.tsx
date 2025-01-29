@@ -1,12 +1,6 @@
 "use client";
 import FormInput from "../from/FormInputStats";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
+import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 
 interface ModalProps {
   isOpen: boolean;

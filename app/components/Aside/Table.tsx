@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 interface Props {
